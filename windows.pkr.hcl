@@ -57,12 +57,6 @@ build {
   }
 
   provisioner "powershell" {
-    environment_vars = [
-      "VAR1=A$Dollar",
-      "VAR2=A`Backtick",
-      "VAR3=A'SingleQuote",
-      "VAR4=A\"DoubleQuote"
-    ]
     script = "./sample_script.ps1"
   }
 }
