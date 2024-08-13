@@ -7,6 +7,8 @@ packer {
   }
 }
 
+
+
 variable "region" {
   type    = string
   default = "us-east-1"
@@ -14,7 +16,10 @@ variable "region" {
 
 locals {
   timestamp = regex_replace(timestamp(), "[- TZ:]", "")
+  winrm_password = vault("secret/data/packer", "winrm_password")
+  winrm_username = vault("secret/data/packer", "winrm_username")
 }
+
 
 source "amazon-ebs" "firstrun-windows" {
   ami_name      = "packer-windows-demo-${local.timestamp}"
@@ -33,8 +38,8 @@ source "amazon-ebs" "firstrun-windows" {
   }
 
   user_data_file = "./bootstrap_win.txt"
-  winrm_password = "SuperS3cr3t!!!!"
-  winrm_username = "Administrator"
+  winrm_password = local.winrm_password
+  winrm_username = local.winrm_username
 }
 
 build {
